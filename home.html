@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" target="_top" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <head>
+    <style>
+
+      .page-view {
+        display: none;
+      }
+
+      .mobile-nav-bar {
+        text-align: center;
+      }
+
+      .mobile-nav-bar-button {
+        height: 175px;
+        align-content: center;
+        width: 100%;
+      }
+
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 500,
+        'GRAD' 200,
+        'opsz' 40
+      }
+
+      .notify-dot {
+        font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 200,
+        'opsz' 40;
+        margin-top: -25px;
+        margin-right: -25px;
+      }
+
+    </style>
+
+    <script>
+
+      const PAGE_NAMES = ["plants", "watering", "maintenance", "pests"];
+      const refreshListEvent = new Event("readyForList");
+
+      function load_pages() {
+
+        google.script.run.withSuccessHandler(fill_pages_content).getAllPagesContent();
+
+        //var elem = document.getElementById("page_content");
+        //elem.addEventListener("readyForList", get_plants_list_cards);
+
+        //elem.dispatchEvent(refreshListEvent);
+
+      }
+
+      function fill_pages_content(html) {
+        var content = document.getElementById("page_content");
+        content.innerHTML = html;
+
+        get_plants_list_cards();
+
+      }
+
+      function nav_to(page_name) {
+        console.log("navigating...");
+        var i;
+        var x = document.getElementsByClassName("page-view");
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
+        }
+        document.getElementById(page_name + "_page").style.display = "block";
+
+        var tabs = document.getElementsByClassName("mobile-nav-bar");
+        for (i = 0; i < tabs.length; i++) {
+          tabs[i].className = tabs[i].className.replace(" w3-sand", "");
+        }
+        document.getElementById(page_name + "_nav").className += " w3-sand"; 
+      }
+
+
+      function show_plants_list(html) {
+        console.log("adding cards to page...");
+        document.getElementById("plants_display_area").innerHTML = html;
+      }
+
+      function get_plants_list_cards() {
+        console.log("requesting list cards...");
+        window.setTimeout(google.script.run.withSuccessHandler(show_plants_list).getPlantListCards(), 3000);       
+      }
+
+    </script>
+
+  </head>
+
+  <body onload="load_pages()">
+
+
+    <div id="page_content">
+
+    </div>
+
+    <div id="nav_bar" class="w3-cell-row w3-lime w3-bottom">
+
+      <div id="plants_nav" class="w3-cell mobile-nav-bar w3-sand">
+        <button class="w3-button mobile-nav-bar-button w3-hover-sand" onclick="nav_to('plants')">
+          <span class="material-symbols-outlined w3-jumbo">
+            &#xf8aa
+          </span>
+        </button>
+      </div>
+
+      <div id="watering_nav" class="w3-cell mobile-nav-bar">
+        <button class="w3-button mobile-nav-bar-button w3-hover-sand" onclick="nav_to('watering')">
+          <span class="material-symbols-outlined w3-jumbo w3-display-container">
+            &#xe798
+
+            <span id="watering_notify_dot" class="notify-dot w3-xxxlarge w3-text-red w3-gray w3-round-xxlarge w3-display-topright" hidden>
+              &#xe000
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div id="maintenance_nav" class="w3-cell mobile-nav-bar">
+        <button class="w3-button mobile-nav-bar-button w3-hover-sand" onclick="nav_to('maintenance')">
+          <span class="material-symbols-outlined w3-jumbo w3-display-container">
+            &#xe14e
+
+            <span id="maintenance_notify_dot" class="notify-dot w3-xxxlarge w3-text-red w3-gray w3-round-xxlarge w3-display-topright" hidden>
+              &#xe000
+            </span>
+          </span>
+        </button>
+      </div>
+
+      <div id="pests_nav" class="w3-cell mobile-nav-bar">
+        <button class="w3-button mobile-nav-bar-button w3-hover-sand" onclick="nav_to('pests')">
+          <span class="material-symbols-outlined w3-jumbo">
+            &#xe868
+
+            <span id="pests_notify_dot" class="notify-dot w3-xxxlarge w3-text-red w3-gray w3-round-xxlarge w3-display-topright" hidden>
+              &#xe000
+            </span>
+
+          </span>
+        </button>
+      </div>
+
+    </div>
+
+  </body>
+
+</html>
