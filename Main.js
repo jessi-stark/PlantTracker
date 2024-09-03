@@ -26,6 +26,7 @@ function getPageContent(pageName) {
 
 function getPlantListCards() {
 
+  //adding this comment for a test commit
   var html = HtmlService.createTemplateFromFile("plant_list_card.html").evaluate().getContent();
   console.log(html);
   return html;
